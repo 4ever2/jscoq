@@ -19,7 +19,7 @@ type async_flags = {
   deep_edits   : bool;
 }
 
-type require_lib = (string * string option * Lib.export_flag option)
+type require_lib = Coqargs.require_injection
 type top_mode = Interactive | Vo
 
 type coq_opts = {

@@ -1,0 +1,13 @@
+diff --git a/vernac/loadpath.ml b/vernac/loadpath.ml
+index 2057b69d57..cb658c507c 100644
+--- a/vernac/loadpath.ml
++++ b/vernac/loadpath.ml
+@@ -20,7 +20,7 @@ type t = {
+   path_root : (CUnix.physical_path * DP.t);
+ }
+ 
+-let load_paths = Summary.ref ([] : t list) ~stage:Summary.Stage.Synterp ~name:"LOADPATHS"
++let load_paths = Summary.ref ([] : t list) ~stage:Summary.Stage.Interp ~name:"LOADPATHS"
+ 
+ let logical p = p.path_logical
+ let physical p = p.path_physical

@@ -20,7 +20,7 @@ type async_flags = {
   deep_edits   : bool;
 }
 
-type require_lib = (string * string option * Lib.export_flag option)
+type require_lib = Coqargs.require_injection
 type top_mode = Interactive | Vo
 
 type coq_opts = {
@@ -81,7 +81,6 @@ let coq_init opts =
   Global.set_impredicative_set false;
   Global.set_VM false;
   Global.set_native_compiler false;
-  Flags.set_native_compiler false;
   CWarnings.set_flags default_warning_flags;
   set_options opts.opt_values;
 
@@ -92,7 +91,8 @@ let coq_init opts =
   (**************************************************************************)
   (* Start the STM!!                                                        *)
   (**************************************************************************)
-  Stm.init_core ()
+  Stm.init_core ();
+  Stm.init_process Stm.AsyncOpts.default_opts
 
 let new_doc opts =
   let doc_type = match opts.mode with
@@ -108,11 +108,11 @@ let new_doc opts =
 
 let mode_of_stm ~doc sid =
   match Stm.state_of_id ~doc sid with
-  | Valid (Some { lemmas = Some _; _ }) -> Proof
+    | Valid (Some { Vernacstate.interp = { Vernacstate.Interp.lemmas = Some _; _ } }) -> Proof
   | _ -> General
 
 let context_of_st m = match m with
-  | Stm.Valid (Some { Vernacstate.lemmas = Some lemma ; _ } ) ->
+  | Stm.Valid (Some { Vernacstate.interp = { Vernacstate.Interp.lemmas = Some lemma ; _ } }) ->
     Vernacstate.LemmaStack.with_top lemma
       ~f:(fun pstate -> Declare.Proof.get_current_context pstate)
   | _ ->
@@ -129,9 +129,9 @@ let compile_vo ~doc vo_out_fn =
   let dirp = Lib.library_dp () in
   (* freeze and un-freeze to to allow "snapshot" compilation *)
   (*  (normally, save_library_to closes the lib)             *)
-  let frz = Vernacstate.freeze_interp_state ~marshallable:false in
+  let frz = Vernacstate.Interp.freeze_interp_state () in
   Library.save_library_to Library.ProofsTodoNone ~output_native_objects:false dirp vo_out_fn;
-  Vernacstate.unfreeze_interp_state frz;
+  Vernacstate.Interp.unfreeze_interp_state frz;
   vo_out_fn
 
 (** [set_debug t] enables/disables debug mode  *)
