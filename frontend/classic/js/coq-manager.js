@@ -1327,10 +1327,8 @@ const PKG_ALIASES = {
 };
 
 const PKG_AFFILIATES = [  // Affiliated packages in @jscoq/@wacoq scope
-    'mathcomp', 'elpi', 'equations', 'extlib', 'simpleio', 'quickchick',
-    'software-foundations',
-    'paco', 'snu-sflib',
-    'fcsl-pcm', 'htt', 'pnp', 'coqoban', 'stdpp', 'iris'
+    'mathcomp', 'elpi', 'equations', 'extlib', 'simpleio',
+    'quickchick', 'coqoban', 'hierarchy-builder'
 ];
 
 // Local Variables:
