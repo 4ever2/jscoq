@@ -4,7 +4,7 @@
  * This script is adapted from the Software Foundations jsCoq build.
  * So, it may require some tweaking depending on your development and styles.
  */
-import { JsCoq, Deprettify } from './index.js';
+import { JsCoq, Deprettify } from '../../../dist/frontend/index.js';
 
 function jsCoqInject() {
     var b = document.body;
@@ -22,14 +22,24 @@ var jsCoqShow = location.search === '?jscoq=on' ||
                 location.search !== '?jscoq=off' && localStorage.jsCoqShow === 'true';
 
 var jscoq_ids  = ['#main > div.code, #main > div.HIDEFROMHTML > div.code'];
+
+var sp = new URLSearchParams(location.search),
+    ifHas = x => sp.has(x) ? x : undefined;
+
 var jscoq_opts = {
+    backend:   sp.get('backend') ?? ifHas('wa'),
     layout:    'flex',
     show:      jsCoqShow,
     focus:     false,
     replace:   true,
+    // EJGA I disable company Coq as it a bit confusing for teaching
     editor:    { mode: { 'company-coq': true }, className: 'jscoq code-tight' },
+    // editor:    { className: 'jscoq code-tight' },
     init_pkgs: ['init'],
-    all_pkgs:  { '+': ['coq'] },
+    all_pkgs:  ['coq', 'mathcomp', 'equations', 'elpi',
+                'quickchick', 'hierarchy-builder', 'extlib',
+                'simpleio', 'coqoban'
+                ],
     init_import: ['utf8'],
     implicit_libs: true
 };
@@ -45,16 +55,17 @@ async function jsCoqLoad() {
     page.setAttribute('tabindex', '-1');
     page.focus();
 
-    // - load and start jsCoq
-    await JsCoq.load(jscoq_opts.base_path);
+    // - load and start jsCoq, not needed in 8.17
+    // await JsCoq.load(jscoq_opts.base_path);
 
     Deprettify.REPLACES.push(   // LF,PLF define their own versions (for Imp)
         [/∨/g, '\\/'], [/∧/g, '/\\'], [/↔/g, '<->'], [/≤/g, '<='], [/≠/g, '<>'],
         [/∈/g, '\\in']);
 
-    var coq = await JsCoq.start(jscoq_ids, jscoq_opts);
-    //@ts-ignore
-    window.coq = coq;
+    JsCoq.start(jscoq_ids, jscoq_opts).then(res => {
+        /* Global reference */
+        window.coq = res;
+    });
     window.addEventListener('beforeunload', () => { localStorage.jsCoqShow = coq.layout.isVisible(); })
 }
 

@@ -6,17 +6,18 @@ const fs = require('fs'),
       chld = require('child-process-promise');
 
 const JSCOQ_URL = process.env['JSCOQ_URL'] || '.',
-      SCRIPTS = ["frontend/classic/js/jscoq-agent.js"],
-      STYLES = ["frontend/classic/css/jscoqdoc.css"];
+      SCRIPTS = ["dist/frontend/index.js", "frontend/classic/js/jscoq-agent.js"],
+      STYLES = ["dist/frontend/index.css", "frontend/classic/css/jscoqdoc.css"];
 
 const DEFAULT_TEMPLATE =`
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   {{default-tags}}
   <title>{{title}}</title>
+  <link rel="icon" href="frontend/classic/images/favicon.png">
 </head>
 <body>
 <div id="page">
@@ -78,7 +79,7 @@ async function generateDocs(coqdocArgs, opts) {
     var template = opts.template ? fs.readFileSync(opts.template, 'utf-8')
                              : DEFAULT_TEMPLATE;
 
-    await chld.spawn('coqdoc', ['--body-only', ...coqdocArgs], {stdio: 'inherit'});
+    await chld.spawn('coqdoc', ['-s', '--utf8', '--no-lib-name', '--no-index', '--body-only', ...coqdocArgs], {stdio: 'inherit'});
     for (let vFn of coqdocArgs) {
         if (vFn.endsWith('.v')) {
             let htmlFn = path.basename(vFn).replace(/[.]v$/, '.html');
