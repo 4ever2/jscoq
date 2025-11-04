@@ -271,12 +271,20 @@ import CodeMirror from 'codemirror';
         return 'bracket';
       }
 
+      if (state.in_elpi && ch === '}' && stream.peek() === '}') {
+        state.in_elpi = false;
+      }
+
       /* Identifier or keyword*/
       if (/\w/.test(ch))
         stream.eatWhile(/[\w']/);
 
       var cur = stream.current(),
           kind = Object.hasOwn(words, cur) ? words[cur] : 'variable';
+
+      if (cur === "lp" && stream.match(/:{{/, true)) {
+        state.in_elpi = true;
+      }
 
       if (at_sentence_start) {
         state.sentence_kind = kind;
@@ -328,7 +336,7 @@ import CodeMirror from 'codemirror';
     function tokenStatementEnd(stream, state) {
       state.tokenize = tokenBase;
 
-      if(stream.eol() || stream.match(/\s/, false)) {
+      if(!state.in_elpi && (stream.eol() || stream.match(/\s/, false))) {
         state.begin_sentence = true;
         state.sentence_kind = undefined;
         return 'statementend';
@@ -337,7 +345,7 @@ import CodeMirror from 'codemirror';
 
     return {
       startState: function() {
-        return {begin_sentence: true, is_head: false, tokenize: tokenBase, commentLevel: 0};
+        return {begin_sentence: true, is_head: false, tokenize: tokenBase, commentLevel: 0, in_elpi: false};
       },
 
       token: function(stream, state) {
