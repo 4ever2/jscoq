@@ -33,7 +33,6 @@
     var jscoq_opts = {
         backend: sp.get('backend') ?? ifHas('wa'),
         subproc: sp.has('app'),
-        node_modules_path: '../node_modules/',
         file_dialog: true,
         implicit_libs: true,
         editor: { mode: { 'company-coq': true }, theme: editor_theme },
