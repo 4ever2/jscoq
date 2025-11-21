@@ -38,7 +38,8 @@ var jscoq_opts = {
     init_pkgs: ['init'],
     all_pkgs:  ['coq', 'mathcomp', 'equations', 'elpi',
                 'quickchick', 'hierarchy-builder', 'extlib',
-                'simpleio', 'coqoban'
+                'simpleio', 'coqoban', 'iris', 'stdpp',
+                'software-foundations'
                 ],
     init_import: ['utf8'],
     implicit_libs: true
