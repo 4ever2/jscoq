@@ -4,6 +4,10 @@ body {
   --heading-bg: #91a1d1;
 }
 
+#main {
+  box-sizing: content-box;
+}
+
 @media (max-width: 1564px) {  /* 860 / 0.55 */
 
   /* this is a hack that's needed because changing padding causes reflow */

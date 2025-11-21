@@ -65,7 +65,7 @@ export class CoqLayoutClassic {
     </svg>
     <div id="toolbar">
       <div class="exits">
-        <a href="https://coq.now.sh">
+        <a href="/index.html">
           <img class="${backend}-logo" src="${base_path}/frontend/classic/images/${backend}-logo.svg" alt="js"><i>+</i><!--
             --><img class="coq-logo" src="${base_path}/frontend/classic/images/coq-logo.png" alt="Coq">
         </a>
