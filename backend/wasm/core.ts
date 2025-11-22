@@ -69,7 +69,7 @@ class IcoqPod extends EventEmitter {
         }));
 
         //if (refresh)
-        //    this.command(['RefreshLoadPath']);
+        //    this.command(['ReassureLoadPath']);
 
         this.answer([['LoadedPkg', uris]]);
     }
@@ -149,6 +149,8 @@ class IcoqPod extends EventEmitter {
             'dllbase_internalhash_types_stubs.so', `${this.nmDir}/@ocaml-wasm/4.12--janestreet-base/bin/dllbase_internalhash_types_stubs.wasm`);
         this.core.proc.dyld.preload(
             'dllcoqrun_stubs.so', `${this.binDir}/dllcoqrun_stubs.wasm`);
+        this.core.proc.dyld.preload(
+            'dllcoqperf_stubs.so', `${this.binDir}/dllcoqperf_stubs.wasm`);
         this.core.proc.dyld.preload(
             'dlllib_stubs.so', `${this.binDir}/dlllib_stubs.wasm`,
             {

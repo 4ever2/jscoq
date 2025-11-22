@@ -114,6 +114,7 @@ links:
 	ln -sf ../../_build/jscoq+64bit/backend/wasm/wacoq_worker.bc backend/wasm/wacoq_worker.bc
 	ln -sf ../../_build/jscoq+64bit/backend/wasm/dlllib_stubs.wasm backend/wasm/dlllib_stubs.wasm
 	ln -sf ../../_build/jscoq+64bit/backend/wasm/dllcoqrun_stubs.wasm backend/wasm/dllcoqrun_stubs.wasm
+	ln -sf ../../_build/jscoq+64bit/backend/wasm/dllcoqperf_stubs.wasm backend/wasm/dllcoqperf_stubs.wasm
 
 links-clean:
 	rm -f coq-pkgs backend/jsoo/jscoq_worker.bc.js backend/wasm/wacoq_worker.bc \
