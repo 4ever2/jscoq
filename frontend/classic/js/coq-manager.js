@@ -68,7 +68,7 @@ export class CoqManager {
             theme:      'light',
             base_path:   "/",
             node_modules_path: "/node_modules/",
-            backend: "js",
+            backend: "wa",
             pkg_path,
             implicit_libs: false,
             init_pkgs: ['init'],

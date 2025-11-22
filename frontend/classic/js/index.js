@@ -13,7 +13,7 @@ export { FormatPrettyPrint } from '../../format-pprint/js/index.js';
 const scriptDir = import.meta.url.replace(/[^/]*$/, '');
 
 const JsCoq = {
-    backend: 'js',  /* 'js' or 'wa' */
+    backend: 'wa',  /* 'js' or 'wa' */
 
     // js worker path, to be replaced soon
     base_path: scriptDir ? `${scriptDir}../../` : "./",
